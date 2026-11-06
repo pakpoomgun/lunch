@@ -4,6 +4,10 @@ window.APP_CONFIG = {
   API_URL: 'https://script.google.com/macros/s/AKfycbxbIh_qVhus5VkDVLZkVkQ5nuzT1_sUvAKPrYMDTVIVeb20cW4RPJD1EERP-QA56BQg/exec',
   // เวลารอสูงสุดต่อคำขอ (มิลลิวินาที)
   TIMEOUT_MS: 60000,
+  // true = ล็อคไม่ให้ถ่างนิ้วซูม
+  LOCK_ZOOM: true,
+  // true = แสดงวงกลมหมุนตอนเปิดแอป จนกว่าข้อมูลชุดแรกจะมา
+  SPLASH: true,
   // โหมดเต็มจอ (Android): แถบด้านบนกลบรูกล้องหน้า + แสดงนาฬิกา/วันที่
   TOP_BAR: false,            // false = ปิดแถบ
   TOP_BAR_HEIGHT: 36,       // ความสูงแถบ (px) เพิ่ม/ลดได้ให้พอดีรูกล้อง
