@@ -1,6 +1,6 @@
 // Service Worker: แคชเฉพาะไฟล์หน้าเว็บ (app shell) — ข้อมูลจาก Apps Script (POST) ไม่ถูกแคช
 // เมื่อแก้ไฟล์ ให้เปลี่ยนเลข VER เพื่อให้เครื่องผู้ใช้อัปเดต
-const VER = 'lunch-v8';
+const VER = 'lunch-v9';
 const SHELL = ['./index.html', './config.js', './pwa.js', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png', './icons/apple-touch-icon.png'];
 
 // Chrome ไม่ยอมให้ตอบหน้าเว็บด้วย response ที่ผ่าน redirect → คัดลอกเป็น response ใหม่ (เคยทำให้เปิดแอปไม่ได้)
