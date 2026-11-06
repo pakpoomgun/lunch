@@ -34,6 +34,21 @@
   }
   window.google = { script: { run: make() } };
 
+  // โหมดเต็มจอ: เติมแถบสีบางๆ ด้านบนให้กลืนกับรูกล้องหน้า แล้วดันเนื้อหาลงใต้แถบ (ตั้งค่าที่ config.js)
+  if (C.TOP_BAR !== false && !/iPhone|iPad|iPod/.test(navigator.userAgent) &&
+      window.matchMedia && matchMedia('(display-mode: fullscreen)').matches) {
+    const H = 'max(env(safe-area-inset-top,0px),' + (C.TOP_BAR_HEIGHT || 36) + 'px)';
+    document.addEventListener('DOMContentLoaded', function () {
+      const st = document.createElement('style');
+      st.textContent =
+        '#pwa-top{position:fixed;top:0;left:0;right:0;height:' + H + ';background:' + (C.TOP_BAR_COLOR || '#000') + ';z-index:2147483647;pointer-events:none}' +
+        '.wrap{padding-top:calc(' + H + ' + 10px)!important}#toast{top:calc(' + H + ' + 8px)!important}' +
+        '@media(orientation:landscape) and (max-height:500px){#pwa-top{display:none}.wrap{padding-top:8px!important}#toast{top:8px!important}}';
+      document.head.appendChild(st);
+      const b = document.createElement('div'); b.id = 'pwa-top'; document.body.appendChild(b);
+    });
+  }
+
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
   }
