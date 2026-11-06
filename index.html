@@ -170,6 +170,10 @@ h1{font-size:clamp(18px,5.4vw,24px)}
 .en{font-size:12px}
 .hb{gap:6px}.ib{width:36px;height:36px}
 }
+/* กันหัวข้อถูกตัด (iOS): ให้ชื่อกว้างเท่าตัวอักษรจริง และให้ฝั่งชื่อกินพื้นที่ที่เหลือ */
+.brand{flex:1 1 0;min-width:0}
+.brand>div:last-child{flex:1 1 0;min-width:0}
+h1{width:max-content;max-width:none;padding-right:.15em;overflow:visible}
 </style>
 </head>
 <body>
