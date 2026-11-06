@@ -3,9 +3,29 @@
 (function () {
   if (window.google && window.google.script && window.google.script.run) return;   // เปิดใน Apps Script เดิม → ไม่ทำอะไร
   const C = window.APP_CONFIG || {};
+  // หน้าโหลด: วงกลมหมุนระหว่างรอข้อมูลครั้งแรก (ปิดได้ที่ config.js → SPLASH: false)
+  let hideSplash = function () {};
+  if (C.SPLASH !== false) {
+    const sp = document.createElement('div'); sp.id = 'pwa-splash';
+    const sst = document.createElement('style');
+    sst.textContent = '#pwa-splash{position:fixed;inset:0;z-index:2147483646;display:flex;align-items:center;justify-content:center;background:#eef1fb;transition:opacity .35s}' +
+      '@media(prefers-color-scheme:dark){#pwa-splash{background:#05060d}}' +
+      '#pwa-splash i{width:44px;height:44px;border-radius:50%;border:4px solid rgba(120,120,160,.25);border-top-color:#0a84ff;border-right-color:#bf5af2;animation:pwaspin .8s linear infinite}' +
+      '@keyframes pwaspin{to{transform:rotate(360deg)}}';
+    sp.appendChild(document.createElement('i'));
+    document.documentElement.appendChild(sst); document.documentElement.appendChild(sp);
+    let done = false;
+    hideSplash = function () {
+      if (done) return; done = true;
+      sp.style.opacity = '0'; setTimeout(function () { sp.remove(); }, 400);
+    };
+    setTimeout(hideSplash, 15000);   // กันค้าง
+  }
+
   function call(fn, args, ok, fail) {
-    ok = ok || function () {};
-    fail = fail || function () {};
+    const ok0 = ok || function () {}, fail0 = fail || function () {};
+    ok = function (v) { hideSplash(); ok0(v); };
+    fail = function (e) { hideSplash(); fail0(e); };
     if (!C.API_URL || /PASTE_YOUR/.test(C.API_URL)) return fail(new Error('ยังไม่ได้ตั้งค่า API_URL ในไฟล์ config.js'));
     if (!navigator.onLine) return fail(new Error('ออฟไลน์อยู่ ตรวจสอบอินเทอร์เน็ตแล้วลองใหม่'));
     const ac = new AbortController(), to = setTimeout(function () { ac.abort(); }, C.TIMEOUT_MS || 60000);
@@ -33,6 +53,18 @@
     });
   }
   window.google = { script: { run: make() } };
+
+  // ล็อคไม่ให้ถ่างนิ้วซูม (ปิดได้ที่ config.js → LOCK_ZOOM: false)
+  if (C.LOCK_ZOOM !== false) {
+    const vp = document.querySelector('meta[name=viewport]');
+    if (vp) vp.setAttribute('content', 'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover');
+    const z = document.createElement('style');
+    z.textContent = 'html,body{touch-action:pan-x pan-y}';
+    document.head.appendChild(z);
+    ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) {   // กันซูมบน iOS
+      document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false });
+    });
+  }
 
   // โหมดเต็มจอ: เติมแถบสีบางๆ ด้านบนให้กลืนกับรูกล้องหน้า แล้วดันเนื้อหาลงใต้แถบ (ตั้งค่าที่ config.js)
   if (C.TOP_BAR !== false && !/iPhone|iPad|iPod/.test(navigator.userAgent) &&
