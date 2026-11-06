@@ -5,7 +5,7 @@ window.APP_CONFIG = {
   // เวลารอสูงสุดต่อคำขอ (มิลลิวินาที)
   TIMEOUT_MS: 60000,
   // โหมดเต็มจอ (Android): แถบด้านบนกลบรูกล้องหน้า + แสดงนาฬิกา/วันที่
-  TOP_BAR: true,            // false = ปิดแถบ
+  TOP_BAR: false,            // false = ปิดแถบ
   TOP_BAR_HEIGHT: 36,       // ความสูงแถบ (px) เพิ่ม/ลดได้ให้พอดีรูกล้อง
   TOP_BAR_COLOR: '#000',    // สีแถบ
   TOP_BAR_TEXT_COLOR: '#fff', // สีตัวอักษรนาฬิกา
